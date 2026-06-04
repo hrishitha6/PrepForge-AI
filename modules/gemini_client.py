@@ -1,0 +1,47 @@
+import google.generativeai as genai
+from dotenv import load_dotenv
+import os
+load_dotenv()
+api_key=os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel("gemini-2.5-flash")
+def analyze_resume(resume_text, job_description, mentor_profile):
+    prompt=f"""
+You are an internship readiness expert.
+    
+Analyze the candidate's resume against the job description.
+
+Provide:
+
+1. Resume Summary
+2. Internship Readiness Score (0-100)
+3. Matching Skills
+4. Missing Skills
+5. Skill Gaps
+6. Personalized 10-Day Learning Roadmap
+7. Interview Preparation Topics
+8. Mentor-Specific Preparation Advice
+9. Questions To Ask The Mentor
+10. Technologies The Mentor Likely Values
+11. Final Internship Readiness Assessment
+12. Top 10 Likely Interview Questions
+13. Technical Questions Based On Candidate Resume
+14. Technical Questions Based On Job Description
+15. Behavioral Questions
+16. Topics To Revise Before Interview
+17. Mock Interview Tips
+
+Resume:
+
+{resume_text}
+
+Job Description:
+
+{job_description}
+
+Mentor Profile:
+
+{mentor_profile}
+"""
+    response=model.generate_content(prompt)
+    return response.text 
