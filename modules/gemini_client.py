@@ -12,7 +12,7 @@ You are an internship readiness expert.
 Analyze the candidate's resume against the job description.
 
 Provide:
-
+ Internship Readiness Score (out of 100)
 1. Resume Summary
 2. Internship Readiness Score (0-100)
 3. Matching Skills
@@ -30,6 +30,32 @@ Provide:
 15. Behavioral Questions
 16. Topics To Revise Before Interview
 17. Mock Interview Tips
+18. Recommended Learning Resources
+19. Best Courses For Missing Skills
+20. Project Suggestions To Improve Readiness
+
+Calculate an Internship Readiness Score out of 100.
+
+Scoring Criteria:
+- Resume Quality (25 points)
+- Technical Skills Match (25 points)
+- Project Strength (20 points)
+- Job Description Alignment (15 points)
+- Mentor Alignment (15 points)
+
+Provide:
+- Final Score
+- Score Breakdown
+- Reasoning for each category
+
+For every missing skill, recommend:
+- Free learning resources
+- YouTube channels
+- Courses
+- Practice websites
+- Mini project ideas
+
+Make recommendations specific and actionable.
 
 Resume:
 
