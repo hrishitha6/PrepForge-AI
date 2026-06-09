@@ -79,10 +79,10 @@ if uploaded_file:
     st.subheader("Resume Analysis")
     try:
         analysis = analyze_resume(
-            text,
-            job_description,
-            mentor_profile
-        )
+        text,
+        job_description,
+        mentor_profile
+    )
 
     except Exception:
 
@@ -90,40 +90,39 @@ if uploaded_file:
         "⚠️ Gemini unavailable. Showing demo analysis."
     )
 
-    analysis = """
-=== MATCHING SKILLS ===
-Python
-Machine Learning
-Git
-Problem Solving
+        analysis = """
+    === MATCHING SKILLS ===
+    Python
+    Machine Learning
+    Git
+    Problem Solving
 
-=== MISSING SKILLS ===
-Docker
-AWS
-FastAPI
+    === MISSING SKILLS ===
+    Docker
+    AWS
+    FastAPI
 
-=== LEARNING ROADMAP ===
-Day 1-3: Learn FastAPI
-Day 4-6: Learn Docker
-Day 7-10: Build Mini Project
+    === LEARNING ROADMAP ===
+    Day 1-3: Learn FastAPI
+    Day 4-6: Learn Docker
+    Day 7-10: Build Mini Project
 
-=== LEARNING RESOURCES ===
-FastAPI Docs
-Docker Docs
-AWS Skill Builder
+    === LEARNING RESOURCES ===
+    FastAPI Docs
+    Docker Docs
+    AWS Skill Builder
 
-=== INTERVIEW QUESTIONS ===
-What is REST API?
-What is Docker?
-Explain Python OOP concepts.
+    === INTERVIEW QUESTIONS ===
+    What is REST API?
+    What is Docker?
+    Explain Python OOP concepts.
 
-=== PROJECT SUGGESTIONS ===
-AI Resume Analyzer
-Interview Preparation Assistant
+    === PROJECT SUGGESTIONS ===
+    AI Resume Analyzer
+    Interview Preparation Assistant
 
-87/100
-"""
-    st.stop()
+    87/100
+    """
     score_match=re.search(r'(\d{1,3})/100', analysis)
     if score_match:
         score = int(score_match.group(1))
