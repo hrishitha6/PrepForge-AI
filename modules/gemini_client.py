@@ -1,3 +1,4 @@
+from urllib import response
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
@@ -57,6 +58,75 @@ For every missing skill, recommend:
 
 Make recommendations specific and actionable.
 
+Return the response in EXACTLY this format:
+
+=== SCORE ===
+
+=== RESUME SUMMARY ===
+
+=== MATCHING SKILLS ===
+
+=== MISSING SKILLS ===
+
+=== SKILL GAPS ===
+
+=== LEARNING ROADMAP ===
+
+=== INTERVIEW PREPARATION ===
+
+=== MENTOR ADVICE ===
+
+=== QUESTIONS FOR MENTOR ===
+
+=== TECHNOLOGIES MENTOR VALUES ===
+
+=== FINAL ASSESSMENT ===
+
+=== INTERVIEW QUESTIONS ===
+
+=== TECHNICAL QUESTIONS RESUME ===
+
+=== TECHNICAL QUESTIONS JD ===
+
+=== BEHAVIORAL QUESTIONS ===
+
+=== TOPICS TO REVISE ===
+
+=== MOCK INTERVIEW TIPS ===
+
+=== LEARNING RESOURCES ===
+
+=== COURSES ===
+
+=== PROJECT SUGGESTIONS ===
+
+Return your response EXACTLY in this format:
+
+=== MATCHING SKILLS ===
+skill1
+skill2
+skill3
+
+=== MISSING SKILLS ===
+skill1
+skill2
+skill3
+
+=== LEARNING ROADMAP ===
+roadmap content
+
+=== INTERVIEW QUESTIONS ===
+questions
+
+=== LEARNING RESOURCES ===
+resources
+
+=== PROJECT SUGGESTIONS ===
+projects
+
+=== FULL ANALYSIS ===
+full analysis
+
 Resume:
 
 {resume_text}
@@ -69,5 +139,6 @@ Mentor Profile:
 
 {mentor_profile}
 """
-    response=model.generate_content(prompt)
-    return response.text 
+    response = model.generate_content(prompt)
+    analysis = response.text
+    return analysis
