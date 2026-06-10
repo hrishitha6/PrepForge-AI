@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 api_key=os.getenv("GEMINI_API_KEY")
+print("API KEY FOUND:", bool(api_key))
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-2.5-flash")
 def analyze_resume(resume_text, job_description, mentor_profile):
@@ -139,6 +140,10 @@ Mentor Profile:
 
 {mentor_profile}
 """
-    response = model.generate_content(prompt)
-    analysis = response.text
-    return analysis
+    try:
+        response = model.generate_content(prompt)
+        return response.text
+
+    except Exception as e:
+        print("GEMINI ERROR:", str(e))
+        raise e

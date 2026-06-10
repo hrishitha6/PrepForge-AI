@@ -124,7 +124,6 @@ if uploaded_file:
     87/100
     """
     score_match=re.search(r'(\d{1,3})/100', analysis)
-    st.write("MATCH:", score_match)
     if score_match:
         score = int(score_match.group(1))
         col1, col2, col3 = st.columns([1, 2, 1])
