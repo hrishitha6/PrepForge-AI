@@ -1,7 +1,7 @@
-from urllib import response
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
+import time
 load_dotenv()
 api_key=os.getenv("GEMINI_API_KEY")
 print("API KEY FOUND:", bool(api_key))
@@ -15,26 +15,13 @@ Analyze the candidate's resume against the job description.
 
 Provide:
  Internship Readiness Score (out of 100)
-1. Resume Summary
-2. Internship Readiness Score (0-100)
-3. Matching Skills
-4. Missing Skills
-5. Skill Gaps
-6. Personalized 10-Day Learning Roadmap
-7. Interview Preparation Topics
-8. Mentor-Specific Preparation Advice
-9. Questions To Ask The Mentor
-10. Technologies The Mentor Likely Values
-11. Final Internship Readiness Assessment
-12. Top 10 Likely Interview Questions
-13. Technical Questions Based On Candidate Resume
-14. Technical Questions Based On Job Description
-15. Behavioral Questions
-16. Topics To Revise Before Interview
-17. Mock Interview Tips
-18. Recommended Learning Resources
-19. Best Courses For Missing Skills
-20. Project Suggestions To Improve Readiness
+1. Score
+2. Matching Skills
+3. Missing Skills
+4. Learning Roadmap
+5. Interview Questions
+6. Learning Resources
+7. Project Suggestions
 
 Calculate an Internship Readiness Score out of 100.
 
@@ -61,57 +48,15 @@ Make recommendations specific and actionable.
 
 Return the response in EXACTLY this format:
 
-=== SCORE ===
-
-=== RESUME SUMMARY ===
-
-=== MATCHING SKILLS ===
-
-=== MISSING SKILLS ===
-
-=== SKILL GAPS ===
-
 === LEARNING ROADMAP ===
-
-=== INTERVIEW PREPARATION ===
-
-=== MENTOR ADVICE ===
-
-=== QUESTIONS FOR MENTOR ===
-
-=== TECHNOLOGIES MENTOR VALUES ===
-
-=== FINAL ASSESSMENT ===
 
 === INTERVIEW QUESTIONS ===
 
-=== TECHNICAL QUESTIONS RESUME ===
-
-=== TECHNICAL QUESTIONS JD ===
-
-=== BEHAVIORAL QUESTIONS ===
-
-=== TOPICS TO REVISE ===
-
-=== MOCK INTERVIEW TIPS ===
-
 === LEARNING RESOURCES ===
-
-=== COURSES ===
 
 === PROJECT SUGGESTIONS ===
 
 Return your response EXACTLY in this format:
-
-=== MATCHING SKILLS ===
-skill1
-skill2
-skill3
-
-=== MISSING SKILLS ===
-skill1
-skill2
-skill3
 
 === LEARNING ROADMAP ===
 roadmap content
@@ -124,9 +69,6 @@ resources
 
 === PROJECT SUGGESTIONS ===
 projects
-
-=== FULL ANALYSIS ===
-full analysis
 
 Resume:
 
@@ -141,9 +83,12 @@ Mentor Profile:
 {mentor_profile}
 """
     try:
+        start = time.time()
+        print("Sending request to Gemini...")
         response = model.generate_content(prompt)
+        print("Received response from Gemini")
+        print("TIME TAKEN:", time.time() - start)
         return response.text
-
     except Exception as e:
         print("GEMINI ERROR:", str(e))
         raise e

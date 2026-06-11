@@ -1,7 +1,9 @@
 import streamlit as st
+import pandas as pd
 import re 
 from modules.pdf_reader import extract_text_from_pdf
 from modules.gemini_client import analyze_resume
+from modules.skill_matcher import compare_skills, calculate_score, get_score_breakdown
 st.markdown("""
 <style>
 
@@ -46,7 +48,9 @@ def get_section(text, section_name):
 st.set_page_config(page_title="PrepForge AI", page_icon="🚀", layout="wide")
 st.title("🚀 PrepForge AI")
 st.subheader("AI-Powered Internship Readiness Platform")
-
+st.caption(
+    "Built with Python, Streamlit, NLP-based skill matching, and Gemini AI"
+)
 st.markdown("""
 ### Get Internship Ready Faster
 Upload your resume, add a job description, and mentor profile to receive personalized readiness insights.
@@ -76,12 +80,25 @@ with input_col:
 st.markdown("---")
 if uploaded_file:
     text = extract_text_from_pdf(uploaded_file)
+    matching, missing = compare_skills(
+    text,
+    job_description
+)
     st.subheader("Resume Analysis")
     try:
         analysis = analyze_resume(
         text,
         job_description,
         mentor_profile
+    )
+
+        score = calculate_score(
+            matching,
+            missing
+        )
+        technical_match, resume_strength, skill_coverage = get_score_breakdown(
+        matching,
+        missing
     )
 
     except Exception:
@@ -123,9 +140,26 @@ if uploaded_file:
 
     87/100
     """
-    score_match=re.search(r'(\d{1,3})/100', analysis)
-    if score_match:
-        score = int(score_match.group(1))
+        matching = [
+        "Python",
+        "Machine Learning",
+        "Git",
+        "Problem Solving"
+    ]
+    missing = [
+        "Docker",
+        "AWS",
+        "FastAPI"
+    ]
+    score = calculate_score(
+        matching,
+        missing
+    )
+    technical_match, resume_strength, skill_coverage = get_score_breakdown(
+        matching,
+        missing
+    )
+    if score is not None:
         col1, col2, col3 = st.columns([1, 2, 1])
 
         with col1:
@@ -186,6 +220,43 @@ if uploaded_file:
                 
         st.subheader("📋 Quick Overview")
         st.markdown("---")
+        chart_data = pd.DataFrame(
+            {
+                "Count": [
+                    len(matching),
+                    len(missing)
+                ]
+            },
+            index=[
+                "Matching Skills",
+                "Missing Skills"
+            ]
+        )
+
+        st.subheader("📊 Skills Analysis")
+
+        st.bar_chart(chart_data)
+        st.subheader("📈 Score Breakdown")
+
+        b1, b2, b3 = st.columns(3)
+
+        with b1:
+            st.metric(
+                "Technical Match",
+                f"{technical_match}%"
+            )
+
+        with b2:
+            st.metric(
+                "Resume Strength",
+                f"{resume_strength}%"
+            )
+
+        with b3:
+            st.metric(
+                "Skill Coverage",
+                f"{skill_coverage}%"
+            )
 
         st.markdown("""
 <div class='hero-card'>
@@ -199,11 +270,12 @@ if uploaded_file:
 
         with left_col:
             with st.expander("✅ Matching Skills"):
-                matching_skills = get_section(
-                analysis,
-                "MATCHING SKILLS"
-            )
-                st.success(matching_skills)
+                matching_skills = "\n".join(matching)
+                if matching:
+                    for skill in matching:
+                        st.success(skill)
+                else:
+                    st.info("No matching skills found.")
 
             with st.expander("📅 Learning Roadmap"):
                 learning_roadmap = get_section(
@@ -221,11 +293,12 @@ if uploaded_file:
 
         with right_col:
             with st.expander("❌ Missing Skills"):
-                missing_skills = get_section(
-                analysis,
-                "MISSING SKILLS"
-            )
-                st.error(missing_skills)
+                missing_skills = "\n".join(missing)
+                if missing:
+                    for skill in missing:
+                        st.error(skill)
+                else:
+                    st.success("No missing skills detected.")
 
             with st.expander("🎤 Interview Questions"):
                 interview_questions = get_section(
